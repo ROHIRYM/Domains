@@ -1,0 +1,40 @@
+body {
+	background-color: lightgray;
+}
+
+.myheader {
+	margin: 20px auto;
+}
+
+.myheader a {
+	text-decoration: none;
+	display: block;
+	height: 100%;
+	width: 100%;
+	border-radius: 20px;
+	background-color: gray;
+	color: white;
+	font-size: 3em;
+	text-align: center;
+}
+
+.myheader a:hover {
+	background-color: darkgray;
+	color: lightyellow;
+}
+
+.container .row a {
+	display: block;
+	height: 250px;
+	width: 250px;
+	border-radius: 100%;
+	text-decoration: none;
+	font-size: 4em;
+	text-align: center;
+	line-height: 250px;
+	margin: 150px auto;
+}
+
+.container .row a:hover {
+	background-color: lightyellow;
+}
