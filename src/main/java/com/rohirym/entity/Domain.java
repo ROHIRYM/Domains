@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -24,6 +25,7 @@ public class Domain implements Serializable{
     
     @Column
     @NotEmpty
+    @Pattern(message = "Not valid domain", regexp = "^(https?://)?([A-Za-z0-9]{1,63}\\.)+[A-Za-z]{2,6}$")
     private String domainName;
 
 	public Domain() {

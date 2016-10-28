@@ -38,3 +38,11 @@ body {
 .container .row a:hover {
 	background-color: lightyellow;
 }
+
+.error {
+	width: 100%;
+    text-align: center;
+    color: red;
+    display: block;
+    margin: auto;
+}

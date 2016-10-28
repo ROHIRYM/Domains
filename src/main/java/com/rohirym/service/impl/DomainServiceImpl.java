@@ -23,10 +23,12 @@ public class DomainServiceImpl implements DomainService{
 
     @Override
     public long createDomain(Domain domain) {
+    	makeDomainValid(domain);
         return domainDAO.createDomain(domain);
     }
     @Override
     public Domain updateDomain(Domain domain) {
+    	makeDomainValid(domain);
         return domainDAO.updateDomain(domain);
     }
     @Override
@@ -44,5 +46,12 @@ public class DomainServiceImpl implements DomainService{
     @Override
     public List<Domain> getAllDomains(String searchName) {
         return domainDAO.getAllDomains(searchName);
+    }
+    
+    private void makeDomainValid(Domain domain) {
+    	String domainName = domain.getDomainName();
+    	if (!domainName.startsWith("http://") && !domainName.startsWith("https://")) {
+    		domain.setDomainName("http://" + domainName);
+    	}
     }
 }

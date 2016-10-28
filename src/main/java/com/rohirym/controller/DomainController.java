@@ -2,11 +2,15 @@ package com.rohirym.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -26,33 +30,36 @@ public class DomainController {
 
 	@Autowired
 	private DomainService domainService;
-	
+
 	@Autowired
 	private DomainStatusService domainStatusService;
 
-	@RequestMapping("createDomain")
+	@RequestMapping(value = "/createDomain", method = RequestMethod.GET)
 	public ModelAndView createDomain(@ModelAttribute Domain domain) {
 		logger.info("Creating Domain. Data: " + domain);
 		return new ModelAndView("domainForm");
 	}
 
-	@RequestMapping("editDomain")
+	@RequestMapping(value = "/editDomain", method = RequestMethod.GET)
 	public ModelAndView editDomain(@RequestParam long id, @ModelAttribute Domain domain) {
 		logger.info("Updating the Domain for the Id " + id);
 		domain = domainService.getDomain(id);
 		return new ModelAndView("domainForm", "domainObject", domain);
 	}
 
-	@RequestMapping("saveDomain")
-	public ModelAndView saveDomain(@ModelAttribute Domain domain) {
+	@RequestMapping(value = { "/createDomain", "/editDomain" }, method = RequestMethod.POST)
+	public ModelAndView saveDomain(@ModelAttribute("domain") @Valid Domain domain, BindingResult result) {
 		logger.info("Saving the Domain. Data : " + domain);
-		if (domain.getId() == 0) { // if domain id is 0 then creating the domain other
-									// updating the domain
-			domainService.createDomain(domain);
+		if (result.hasErrors()) {
+			return new ModelAndView("domainForm", "domainObject", domain);
 		} else {
-			domainService.updateDomain(domain);
+			if (domain.getId() == 0) {
+				domainService.createDomain(domain);
+			} else {
+				domainService.updateDomain(domain);
+			}
+			return new ModelAndView("redirect:getAllDomains");
 		}
-		return new ModelAndView("redirect:getAllDomains");
 	}
 
 	@RequestMapping("deleteDomain")
@@ -73,7 +80,7 @@ public class DomainController {
 		logger.info("Searching the Domain. Domain Names: " + searchName);
 		return domainListModelAndView(domainService.getAllDomains(searchName));
 	}
-	
+
 	private ModelAndView domainListModelAndView(List<Domain> domainList) {
 		List<DomainAndStatusDTO> domainAndStatusList = domainStatusService.lookup(domainList);
 		return new ModelAndView("domainList", "domainAndStatusList", domainAndStatusList);

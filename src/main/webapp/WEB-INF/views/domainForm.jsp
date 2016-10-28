@@ -24,7 +24,7 @@
 			</div>
 			<div class="panel-body">
 				<form:form id="domainRegisterForm" cssClass="form-horizontal"
-					modelAttribute="domain" method="post" action="saveDomain">
+					modelAttribute="domain" method="post">
 
 					<div class="form-group">
 						<div class="control-label col-xs-3">
